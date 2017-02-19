@@ -1,0 +1,31 @@
+---
+driver:
+  name: vagrant
+  synced_folders:
+  - ["./", "/cookbook"]
+
+provisioner:
+  name: chef_zero
+
+platforms:
+  - name: bento/centos-6.7
+
+suites:
+  - name: primary
+    driver:
+      vm_hostname: nag1.test.manasg.com
+      customize:
+        memory: 2048
+        cpus: 2
+      network:
+      - ["forwarded_port", {guest: 80, host: 30080}]
+    run_list:
+      - 'mg_nagios'
+
+  - name: candidate
+    driver:
+      vm_hostname: srv1.test.manasg.com
+      network:
+      - ["private_network", { type: "dhcp" } ]
+    run_list:
+      - 'mg_nagios::_test'
