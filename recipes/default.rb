@@ -2,8 +2,12 @@ include_recipe 'nagios'
 package 'nagios-plugins-ping'
 package 'nagios-plugins-ssh'
 
-nagios_host 'srv1.test.manasg.com' do
-  options 'address' => '172.28.128.3'
+test_nodes = node['test_nodes']
+
+test_nodes.each do |_n, conf|
+  nagios_host conf['fqdn'] do
+    options 'address' => conf['ipaddress']
+  end
 end
 
 nagios_command 'check_host_alive' do
@@ -15,6 +19,6 @@ nagios_command 'check_ssh' do
 end
 
 nagios_service 'check_ssh' do
-  options 'hostgroup_name' => 'all', # part of the cookbook
+  options 'hostgroup_name' => 'all', # comes as part of the community cookbook
           'check_command'  => 'check_ssh'
 end
