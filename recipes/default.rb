@@ -2,11 +2,20 @@ include_recipe 'nagios'
 package 'nagios-plugins-ping'
 package 'nagios-plugins-ssh'
 
+Nagios::Hostgroup.create('dev')
+Nagios::Hostgroup.create('prod')
+
+# Chef Search would be used here instead of my test nodes
+
 test_nodes = node['test_nodes']
 
 test_nodes.each do |_n, conf|
+  name = conf['fqdn']
+  hg   = name =~ /^prod/ ? 'prod' : 'dev'
+
   nagios_host conf['fqdn'] do
-    options 'address' => conf['ipaddress']
+    options 'address' => conf['ipaddress'],
+            'hostgroups' => [hg]
   end
 end
 

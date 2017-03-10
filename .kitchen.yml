@@ -13,6 +13,9 @@ platforms:
 
 suites:
   - name: primary1
+    provisioner:
+      client_rb:
+        environment: prod_tools
     driver:
       vm_hostname: nag1.test.manasg.com
       customize:
