@@ -26,32 +26,35 @@ suites:
     run_list:
       - 'mg_nagios'
     attributes:
-      test_nodes:
+      nagios:
+        default_service:
+          check_interval: 15
+      target_servers:
         candidate1:
-          fqdn: prod-srv1.test.manasg.com
+          fqdn: prodsrv1.test.manasg.com
           ipaddress: 172.28.128.3
         candidate2:
-          fqdn: dev-srv1.test.manasg.com
+          fqdn: devsrv1.test.manasg.com
           ipaddress: 172.28.128.4
 
   - name: candidate1
     driver:
-      vm_hostname: prod-srv1.test.manasg.com
+      vm_hostname: prodsrv1.test.manasg.com
       customize:
         memory: 512
         cpus: 1
       network:
       - ["private_network", { ip: "172.28.128.3" } ]
     run_list:
-      - 'mg_nagios::_test'
+      - 'mg_nagios::sample_common'
 
   - name: candidate2
     driver:
-      vm_hostname: dev-srv1.test.manasg.com
+      vm_hostname: devsrv1.test.manasg.com
       customize:
         memory: 512
         cpus: 1
       network:
       - ["private_network", { ip: "172.28.128.4" } ]
     run_list:
-      - 'mg_nagios::_test'
+      - 'mg_nagios::sample_common'

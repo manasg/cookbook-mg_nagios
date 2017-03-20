@@ -1,4 +1,7 @@
+# this mimics a default role/recipe which would handle monitoring related housekeeping
+
 log "Chef worked! I am #{node['fqdn']} with address: #{node['addresses']}"
+
 log 'Here are my all my ip addresses'
 
 node['network']['interfaces'].each do |i, v|
@@ -31,3 +34,5 @@ end
 include_recipe 'yum-epel'
 
 package 'fping'
+
+package 'nagios-plugins-disk'
